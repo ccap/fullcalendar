@@ -490,7 +490,7 @@ function Calendar(element, options, eventSources) {
 		if (value === undefined) {
 			return options[name];
 		}
-		if (name == 'height' || name == 'contentHeight' || name == 'aspectRatio') {
+		if (name == 'height' || name == 'contentHeight' || name == 'aspectRatio' || name == 'lazyFetching') {
 			options[name] = value;
 			updateSize();
 		}
