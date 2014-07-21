@@ -20,6 +20,7 @@ function EventManager(options, _sources) {
 	t.addEventSource = addEventSource;
 	t.removeEventSource = removeEventSource;
 	t.updateEvent = updateEvent;
+	t.updateEvents = updateEvents;
 	t.renderEvent = renderEvent;
 	t.removeEvents = removeEvents;
 	t.clientEvents = clientEvents;
@@ -232,9 +233,13 @@ function EventManager(options, _sources) {
 	
 	/* Manipulation
 	-----------------------------------------------------------------------------*/
+
+	function updateEvent(event) {
+		_updateEvent(event);
+		reportEvents(cache);
+	}
 	
-	
-	function updateEvent(event) { // update an existing event
+	function _updateEvent(event) { // update an existing event
 		var i, len = cache.length, e,
 			defaultEventEnd = getView().defaultEventEnd, // getView???
 			startDelta = event.start - event._start,
@@ -266,10 +271,16 @@ function EventManager(options, _sources) {
 				normalizeEvent(e);
 			}
 		}
-		normalizeEvent(event);
+	}
+
+	function updateEvents(events) {
+		$.each(events, function(e) {
+			_updateEvent(e);
+			normalizeEvent(e);
+		});
+
 		reportEvents(cache);
 	}
-	
 	
 	function renderEvent(event, stick) {
 		normalizeEvent(event);
@@ -282,7 +293,6 @@ function EventManager(options, _sources) {
 		}
 		reportEvents(cache);
 	}
-	
 	
 	function removeEvents(filter) {
 		if (!filter) { // remove all
